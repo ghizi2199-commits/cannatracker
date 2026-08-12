@@ -57,13 +57,13 @@
                 <p class="text-slate-400 text-sm mt-1">Faça login para acessar suas plantas na nuvem</p>
             </div>
 
-            <!-- Abas de Entrar / Criar Conta -->
+            <!-- Tabs -->
             <div class="flex border-b border-dark-border mb-6">
                 <button id="tab-login-btn" type="button" onclick="window.app.switchAuthTab('login')" class="flex-1 pb-3 text-sm font-semibold text-green-400 border-b-2 border-green-500 transition-colors">Entrar</button>
                 <button id="tab-register-btn" type="button" onclick="window.app.switchAuthTab('register')" class="flex-1 pb-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent hover:text-white transition-colors">Criar Conta</button>
             </div>
 
-            <!-- Formulário de Autenticação -->
+            <!-- Form -->
             <form id="form-auth" onsubmit="window.app.handleAuthSubmit(event)" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-1">E-mail</label>
@@ -80,14 +80,11 @@
 
             <div class="mt-6 flex flex-col items-center gap-3">
                 <button type="button" onclick="window.app.guestLogin()" class="text-xs text-slate-400 hover:text-white underline transition-colors">Entrar como Convidado (Modo Temporário)</button>
-                <button type="button" onclick="window.app.openConfigModal()" class="text-xs text-green-400 hover:text-green-300 font-medium flex items-center gap-1.5 bg-green-500/10 px-3 py-1.5 rounded-lg border border-green-500/20 transition-colors">
-                    <i class="fa-solid fa-gear"></i> Configurar Conexão Firebase (Nuvem)
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Configuração do Firebase -->
+    <!-- MODAL: FIREBASE CONFIG (Mantido oculto caso precise trocar no futuro) -->
     <div id="modal-firebase-config" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl my-auto">
             <div class="flex justify-between items-center p-5 border-b border-dark-border bg-dark-bg/50">
@@ -99,25 +96,9 @@
                 </button>
             </div>
             <div class="p-6 space-y-4">
-                <div class="bg-slate-900/80 p-4 rounded-xl border border-dark-border text-xs text-slate-300 space-y-2">
-                    <p class="font-bold text-white">Como conectar seu próprio Firebase no GitHub Pages:</p>
-                    <ol class="list-decimal list-inside space-y-1 text-slate-400">
-                        <li>Acesse o <a href="https://console.firebase.google.com" target="_blank" class="text-green-400 underline">Firebase Console</a> e crie um projeto gratuito.</li>
-                        <li>No menu lateral, vá em <b>Build > Authentication</b> e ative o provedor <b>E-mail/Senha</b>.</li>
-                        <li>Vá em <b>Project Settings (⚙️) > General</b>, role até "Seus aplicativos" e crie um app Web (&lt;/&gt;).</li>
-                        <li>Copie o objeto <code>firebaseConfig</code> gerado e cole abaixo.</li>
-                    </ol>
-                </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-1">Cole o Objeto JSON do Firebase Config aqui:</label>
-                    <textarea id="fb-config-input" rows="6" placeholder='{
-  "apiKey": "AIzaSy...",
-  "authDomain": "seu-projeto.firebaseapp.com",
-  "projectId": "seu-projeto",
-  "storageBucket": "seu-projeto.appspot.com",
-  "messagingSenderId": "123456789",
-  "appId": "1:123:web:abc"
-}' class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-xs font-mono text-white focus:outline-none focus:border-green-500"></textarea>
+                    <textarea id="fb-config-input" rows="6" class="w-full bg-dark-bg border border-dark-border rounded-lg p-3 text-xs font-mono text-white focus:outline-none focus:border-green-500"></textarea>
                 </div>
                 <div class="flex justify-end space-x-3 pt-2">
                     <button type="button" onclick="window.app.closeModal('modal-firebase-config')" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-700 transition-colors">Cancelar</button>
@@ -148,7 +129,7 @@
             <div class="flex items-center justify-between">
                 <div class="hidden md:block truncate pr-2">
                     <div id="user-email-display" class="text-xs text-slate-300 font-medium truncate">Usuário</div>
-                    <div class="text-[10px] text-green-400 flex items-center gap-1 mt-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Sincronizado</div>
+                    <div class="text-[10px] text-green-400 flex items-center gap-1 mt-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Nuvem Conectada</div>
                 </div>
                 <button type="button" onclick="window.app.logout()" title="Sair da Conta" class="w-full md:w-auto p-2 rounded-lg bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 transition-colors flex items-center justify-center">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -389,28 +370,19 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCustomToken, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'cannatracker-pro-default';
+        const appId = 'cannatracker-pro';
         
-        let firebaseConfig;
-        const savedConfig = localStorage.getItem('cannatracker_fb_config');
-        if (savedConfig) {
-            try {
-                firebaseConfig = JSON.parse(savedConfig);
-            } catch (e) {
-                firebaseConfig = null;
-            }
-        }
-
-        if (!firebaseConfig) {
-            firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-                apiKey: "AIzaSyDummyKeyForGitHubPagesHosting",
-                authDomain: "cannatracker-pro.firebaseapp.com",
-                projectId: "cannatracker-pro",
-                storageBucket: "cannatracker-pro.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:abcdef"
-            };
-        }
+        // --- SUAS CREDENCIAIS REAIS AQUI ---
+        // Agora elas estão "chumbadas" no código, então qualquer pessoa acessando o link
+        // já estará conectada ao seu banco de dados sem precisar colar nada!
+        const firebaseConfig = {
+            apiKey: "AIzaSyAhE3m-xdMOs8YGQo-HvHbG-63PBEaoU9I",
+            authDomain: "cannatracker-fcd78.firebaseapp.com",
+            projectId: "cannatracker-fcd78",
+            storageBucket: "cannatracker-fcd78.firebasestorage.app",
+            messagingSenderId: "978951930892",
+            appId: "1:978951930892:web:c9b16e1b0435ba7ece9a29"
+        };
 
         const firebaseApp = initializeApp(firebaseConfig);
         const db = getFirestore(firebaseApp);
@@ -584,14 +556,6 @@
 
         const app = {
             init: async () => {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    try {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } catch (e) {
-                        console.debug("Custom token auth falhou, usando modo padrão");
-                    }
-                }
-
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         state.currentUser = user;
@@ -629,10 +593,6 @@
             },
 
             openConfigModal: () => {
-                const textarea = document.getElementById('fb-config-input');
-                if (textarea && savedConfig) {
-                    textarea.value = savedConfig;
-                }
                 app.openModal('modal-firebase-config');
             },
 
