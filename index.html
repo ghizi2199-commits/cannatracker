@@ -48,6 +48,7 @@
 </head>
 <body class="flex flex-col md:flex-row h-screen overflow-hidden antialiased">
 
+    <!-- TELA DE LOGIN/AUTENTICAÇÃO -->
     <div id="view-auth" class="fixed inset-0 bg-dark-bg z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-md p-8 shadow-2xl my-auto">
             <div class="text-center mb-8">
@@ -58,7 +59,7 @@
                 <p class="text-slate-400 text-sm mt-1">Faça login para acessar suas plantas na nuvem</p>
             </div>
 
-            <!-- Abas -->
+            <!-- Abas Login / Criar Conta -->
             <div class="flex border-b border-dark-border mb-6">
                 <button id="tab-login-btn" type="button" onclick="window.app.switchAuthTab('login')" class="flex-1 pb-3 text-sm font-semibold text-green-400 border-b-2 border-green-500 transition-colors">Entrar</button>
                 <button id="tab-register-btn" type="button" onclick="window.app.switchAuthTab('register')" class="flex-1 pb-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent hover:text-white transition-colors">Criar Conta</button>
@@ -77,6 +78,11 @@
                 <button type="submit" id="auth-submit-btn" class="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-3 rounded-lg transition-colors shadow-lg shadow-green-500/20 mt-2">
                     Entrar no Sistema
                 </button>
+                
+                <!-- BOTÃO ESQUECI MINHA SENHA ADICIONADO AQUI -->
+                <div id="forgot-pw-wrap" class="text-center mt-3">
+                    <button type="button" onclick="window.app.forgotPassword()" class="text-sm text-green-400 hover:text-green-300 underline transition-colors">Esqueci minha senha</button>
+                </div>
             </form>
 
             <div class="mt-6 flex flex-col items-center gap-3">
@@ -88,6 +94,7 @@
         </div>
     </div>
 
+    <!-- MODAL FIREBASE CONFIG -->
     <div id="modal-firebase-config" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl my-auto">
             <div class="flex justify-between items-center p-5 border-b border-dark-border bg-dark-bg/50">
@@ -115,6 +122,7 @@
         </div>
     </div>
 
+    <!-- HEADER MOBILE -->
     <header id="mobile-header" class="md:hidden flex justify-between items-center p-4 bg-dark-card border-b border-dark-border z-40 shrink-0 hidden shadow-sm">
         <div class="flex items-center">
             <i class="fa-solid fa-leaf text-green-500 text-xl mr-2"></i>
@@ -125,6 +133,7 @@
         </button>
     </header>
 
+    <!-- SIDEBAR -->
     <aside id="app-sidebar" class="w-full md:w-64 bg-dark-card border-t md:border-t-0 md:border-r border-dark-border flex md:flex-col justify-between transition-all duration-300 z-40 hidden shrink-0 order-last md:order-first pb-2 md:pb-0">
         <div class="flex flex-col flex-1 w-full">
             <div class="hidden md:flex h-16 items-center justify-center md:justify-start md:px-6 border-b border-dark-border">
@@ -142,7 +151,6 @@
                 </button>
             </nav>
         </div>
-
         <div class="hidden md:block p-4 border-t border-dark-border">
             <div class="flex items-center justify-between">
                 <div class="truncate pr-2">
@@ -156,8 +164,9 @@
         </div>
     </aside>
 
+    <!-- AREA PRINCIPAL -->
     <main id="app-main" class="flex-1 overflow-y-auto relative bg-dark-bg hidden">
-        
+        <!-- Dashboard -->
         <div id="view-dashboard" class="view-section active p-4 md:p-8">
             <div class="flex justify-between items-center mb-8">
                 <div>
@@ -168,10 +177,10 @@
                     <i class="fa-solid fa-plus md:mr-2"></i> <span class="hidden md:inline">Nova Planta</span>
                 </button>
             </div>
-
+            
             <div id="dash-alerts" class="mb-6 space-y-3 empty:hidden"></div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="dash-stats"></div>
-
+            
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm">
                     <h2 class="text-lg font-bold text-white mb-4 border-b border-dark-border pb-2">Últimos Registros</h2>
@@ -185,6 +194,7 @@
             <div class="h-6 md:hidden"></div>
         </div>
 
+        <!-- Minhas Plantas -->
         <div id="view-plants" class="view-section p-4 md:p-8">
             <div class="flex justify-between items-center mb-8">
                 <div>
@@ -195,23 +205,24 @@
                     <i class="fa-solid fa-plus md:mr-2"></i> <span class="hidden md:inline">Adicionar</span>
                 </button>
             </div>
-
+            
             <div id="plants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             <div class="h-6 md:hidden"></div>
         </div>
 
+        <!-- Detalhes da Planta -->
         <div id="view-plant-details" class="view-section p-4 md:p-8">
             <button type="button" onclick="window.app.navigate('plants')" class="text-slate-400 hover:text-white mb-6 transition-colors flex items-center text-sm font-medium">
                 <i class="fa-solid fa-arrow-left mr-2"></i> Voltar para Plantas
             </button>
             
             <div id="plant-detail-header" class="mb-8"></div>
-
+            
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-1 space-y-6">
                     <div id="plant-info-card" class="bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm"></div>
                 </div>
-
+                
                 <div class="lg:col-span-2 space-y-6">
                     <div class="bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm">
                         <div class="flex justify-between items-center mb-6">
@@ -221,7 +232,7 @@
                             <canvas id="envChart"></canvas>
                         </div>
                     </div>
-
+                    
                     <div class="bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-lg font-bold text-white">Diário de Cultivo</h2>
@@ -237,6 +248,7 @@
         </div>
     </main>
 
+    <!-- Modal Nova Planta -->
     <div id="modal-add-plant" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl transform transition-all my-auto">
             <div class="flex justify-between items-center p-5 border-b border-dark-border bg-dark-bg/50">
@@ -307,6 +319,7 @@
         </div>
     </div>
 
+    <!-- Modal Novo Registro -->
     <div id="modal-add-log" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl transform transition-all my-auto">
             <div class="flex justify-between items-center p-5 border-b border-dark-border bg-dark-bg/50">
@@ -370,16 +383,18 @@
         </div>
     </div>
 
+    <!-- TOAST NOTIFICATIONS -->
     <div id="toast-container" class="fixed bottom-20 md:bottom-4 right-4 flex flex-col gap-2"></div>
 
+    <!-- JAVASCRIPT PRINCIPAL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // 1. ADICIONADO O sendPasswordResetEmail NO IMPORT ABAIXO
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = 'cannatracker-pro';
-        
-        // Suas credenciais do Firebase embutidas diretamente
+
         let firebaseConfig = {
             apiKey: "AIzaSyAhE3m-xdMOs8YGQo-HvHbG-63PBEaoU9I",
             authDomain: "cannatracker-fcd78.firebaseapp.com",
@@ -608,20 +623,24 @@
                 }
             },
 
+            // 2. LÓGICA DE ABA ATUALIZADA PARA MOSTRAR/ESCONDER O BOTÃO DE ESQUECI A SENHA
             switchAuthTab: (mode) => {
                 state.authMode = mode;
                 const loginBtn = document.getElementById('tab-login-btn');
                 const regBtn = document.getElementById('tab-register-btn');
                 const submitBtn = document.getElementById('auth-submit-btn');
+                const forgotPw = document.getElementById('forgot-pw-wrap');
 
                 if (mode === 'login') {
                     loginBtn.className = "flex-1 pb-3 text-sm font-semibold text-green-400 border-b-2 border-green-500 transition-colors";
                     regBtn.className = "flex-1 pb-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent hover:text-white transition-colors";
                     submitBtn.innerText = "Entrar no Sistema";
+                    if (forgotPw) forgotPw.classList.remove('hidden');
                 } else {
                     regBtn.className = "flex-1 pb-3 text-sm font-semibold text-green-400 border-b-2 border-green-500 transition-colors";
                     loginBtn.className = "flex-1 pb-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent hover:text-white transition-colors";
                     submitBtn.innerText = "Criar Conta";
+                    if (forgotPw) forgotPw.classList.add('hidden');
                 }
             },
 
@@ -639,6 +658,30 @@
                     }
                 } catch (error) {
                     utils.showToast(error.message || "Erro na autenticação", "error");
+                }
+            },
+
+            // 3. FUNÇÃO NOVA PARA RECUPERAR SENHA ADICIONADA AQUI
+            forgotPassword: async () => {
+                const email = document.getElementById('auth-email').value.trim();
+                
+                if (!email) {
+                    utils.showToast("Por favor, digite seu e-mail no campo acima primeiro.", "error");
+                    return;
+                }
+                
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    utils.showToast("Link de recuperação enviado para " + email + ". Verifique seu spam!", "success");
+                } catch (error) {
+                    const code = error.code;
+                    if (code === 'auth/user-not-found') {
+                        utils.showToast("Esse e-mail não está cadastrado no sistema.", "error");
+                    } else if (code === 'auth/invalid-email') {
+                        utils.showToast("Formato de e-mail inválido.", "error");
+                    } else {
+                        utils.showToast("Erro ao recuperar senha. Tente novamente.", "error");
+                    }
                 }
             },
 
