@@ -79,7 +79,6 @@
                     Entrar no Sistema
                 </button>
                 
-                <!-- BOTÃO ESQUECI MINHA SENHA ADICIONADO AQUI -->
                 <div id="forgot-pw-wrap" class="text-center mt-3">
                     <button type="button" onclick="window.app.forgotPassword()" class="text-sm text-green-400 hover:text-green-300 underline transition-colors">Esqueci minha senha</button>
                 </div>
@@ -108,7 +107,7 @@
             <div class="p-6 space-y-4">
                 <div class="bg-slate-900/80 p-4 rounded-xl border border-dark-border text-xs text-slate-300 space-y-2">
                     <p class="font-bold text-white">Suas credenciais configuradas:</p>
-                    <p class="text-slate-400">O app já está configurado com suas credenciais padrão. Modifique abaixo apenas se precisar alterar de projeto.</p>
+                    <p class="text-slate-400">O app já está configurado com suas credenciais padrão.</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-1">Objeto JSON do Firebase Config:</label>
@@ -144,6 +143,10 @@
                 <button type="button" onclick="window.app.navigate('dashboard')" id="nav-dashboard" class="flex-1 md:flex-none flex flex-col md:flex-row items-center justify-center md:justify-start p-2 md:p-3 rounded-none md:rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors group pt-3 md:pt-3">
                     <i class="fa-solid fa-chart-pie text-xl md:w-6 text-center mb-1 md:mb-0 group-hover:text-green-400"></i>
                     <span class="text-[10px] md:text-base md:ml-3 font-medium">Dashboard</span>
+                </button>
+                <button type="button" onclick="window.app.navigate('tents')" id="nav-tents" class="flex-1 md:flex-none flex flex-col md:flex-row items-center justify-center md:justify-start p-2 md:p-3 rounded-none md:rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors group pt-3 md:pt-3">
+                    <i class="fa-solid fa-tent text-xl md:w-6 text-center mb-1 md:mb-0 group-hover:text-green-400"></i>
+                    <span class="text-[10px] md:text-base md:ml-3 font-medium">Tendas / Estufas</span>
                 </button>
                 <button type="button" onclick="window.app.navigate('plants')" id="nav-plants" class="flex-1 md:flex-none flex flex-col md:flex-row items-center justify-center md:justify-start p-2 md:p-3 rounded-none md:rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors group pt-3 md:pt-3">
                     <i class="fa-solid fa-seedling text-xl md:w-6 text-center mb-1 md:mb-0 group-hover:text-green-400"></i>
@@ -194,6 +197,43 @@
             <div class="h-6 md:hidden"></div>
         </div>
 
+        <!-- Tendas / Estufas -->
+        <div id="view-tents" class="view-section p-4 md:p-8">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-white">Tendas & Estufas (Grow Runs)</h1>
+                    <p class="text-slate-400 text-sm mt-1">Gerencie o ambiente coletivo e registre dados em massa.</p>
+                </div>
+                <button type="button" onclick="window.app.openNewTentModal()" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-lg shadow-green-500/20">
+                    <i class="fa-solid fa-plus md:mr-2"></i> <span class="hidden md:inline">Nova Tenda</span>
+                </button>
+            </div>
+            <div id="tents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div class="h-6 md:hidden"></div>
+        </div>
+
+        <!-- Detalhes da Tenda -->
+        <div id="view-tent-details" class="view-section p-4 md:p-8">
+            <button type="button" onclick="window.app.navigate('tents')" class="text-slate-400 hover:text-white mb-6 transition-colors flex items-center text-sm font-medium">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Voltar para Tendas
+            </button>
+            <div id="tent-detail-header" class="mb-8"></div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1 space-y-6">
+                    <div id="tent-info-card" class="bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm"></div>
+                </div>
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-white">Plantas nesta Tenda</h2>
+                        </div>
+                        <div id="tent-plants-list" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="h-6 md:hidden"></div>
+        </div>
+
         <!-- Minhas Plantas -->
         <div id="view-plants" class="view-section p-4 md:p-8">
             <div class="flex justify-between items-center mb-8">
@@ -205,7 +245,6 @@
                     <i class="fa-solid fa-plus md:mr-2"></i> <span class="hidden md:inline">Adicionar</span>
                 </button>
             </div>
-            
             <div id="plants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             <div class="h-6 md:hidden"></div>
         </div>
@@ -215,24 +254,20 @@
             <button type="button" onclick="window.app.navigate('plants')" class="text-slate-400 hover:text-white mb-6 transition-colors flex items-center text-sm font-medium">
                 <i class="fa-solid fa-arrow-left mr-2"></i> Voltar para Plantas
             </button>
-            
             <div id="plant-detail-header" class="mb-8"></div>
-            
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-1 space-y-6">
                     <div id="plant-info-card" class="bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm"></div>
                 </div>
-                
                 <div class="lg:col-span-2 space-y-6">
                     <div class="bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg font-bold text-white">Ambiente (Últimos Registros)</h2>
+                            <h2 class="text-lg font-bold text-white">Ambiente & LED (Últimos Registros)</h2>
                         </div>
                         <div class="h-64 w-full">
                             <canvas id="envChart"></canvas>
                         </div>
                     </div>
-                    
                     <div class="bg-dark-card rounded-xl border border-dark-border p-6 shadow-sm">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-lg font-bold text-white">Diário de Cultivo</h2>
@@ -247,6 +282,98 @@
             <div class="h-6 md:hidden"></div>
         </div>
     </main>
+
+    <!-- Modal Nova Tenda -->
+    <div id="modal-add-tent" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-md overflow-hidden shadow-2xl my-auto">
+            <div class="flex justify-between items-center p-5 border-b border-dark-border bg-dark-bg/50">
+                <h3 id="modal-tent-title" class="text-xl font-bold text-white">Cadastrar Nova Tenda</h3>
+                <button type="button" onclick="window.app.closeModal('modal-add-tent')" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <form id="form-add-tent" class="p-5 space-y-4" onsubmit="window.app.handleTentSubmit(event)">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Nome da Tenda/Estufa *</label>
+                    <input type="text" id="t-name" required placeholder="Ex: Tenda Principal 80x80" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Ciclo de Luz Padrão</label>
+                    <select id="t-light-cycle" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500">
+                        <option value="18/6">18/6 (Vegetativo)</option>
+                        <option value="12/12">12/12 (Floração)</option>
+                        <option value="20/4">20/4 (Automática)</option>
+                        <option value="24/0">24/0 (Contínuo)</option>
+                        <option value="Outdoor">Outdoor / Sol</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Hora que a Luz Liga</label>
+                    <input type="time" id="t-light-time" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500" style="color-scheme: dark;">
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" onclick="window.app.closeModal('modal-add-tent')" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-700 transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg text-sm font-medium bg-green-600 hover:bg-green-500 text-white transition-colors">Salvar Tenda</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Registro em Massa na Tenda -->
+    <div id="modal-tent-log" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl my-auto">
+            <div class="flex justify-between items-center p-5 border-b border-dark-border bg-dark-bg/50">
+                <h3 class="text-xl font-bold text-white">Registro em Massa (Tenda)</h3>
+                <button type="button" onclick="window.app.closeModal('modal-tent-log')" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <form id="form-tent-log" class="p-5 space-y-4" onsubmit="window.app.handleTentLogSubmit(event)">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Data *</label>
+                        <input type="date" id="tl-date" required class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500" style="color-scheme: dark;">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Estágio Coletivo</label>
+                        <select id="tl-stage" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                            <option value="Germinação">Germinação</option>
+                            <option value="Muda">Muda (Seedling)</option>
+                            <option value="Vegetativo">Vegetativo</option>
+                            <option value="Floração">Floração</option>
+                            <option value="Flush">Flush</option>
+                            <option value="Colheita/Secagem">Colheita/Secagem</option>
+                            <option value="Cura">Cura</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Temperatura (°C)</label>
+                        <input type="number" id="tl-temp" step="0.1" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Umidade (%)</label>
+                        <input type="number" id="tl-humidity" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Altura do LED (cm)</label>
+                        <input type="number" id="tl-led-height" placeholder="Ex: 45" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Dimmer LED (%)</label>
+                        <input type="number" id="tl-led-dimmer" placeholder="Ex: 80" min="0" max="100" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Notas Gerais da Tenda</label>
+                        <textarea id="tl-notes" rows="2" placeholder="Ex: Manutenção na exaustão realizada..." class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500"></textarea>
+                    </div>
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" onclick="window.app.closeModal('modal-tent-log')" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-700 transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white transition-colors">Salvar para Todas as Plantas</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Modal Nova Planta -->
     <div id="modal-add-plant" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
@@ -266,6 +393,10 @@
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-1">Genética (Strain)</label>
                         <input type="text" id="p-strain" placeholder="Ex: Sour Diesel" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Tenda / Estufa</label>
+                        <select id="p-tent-id" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500"></select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-1">Tipo de Semente</label>
@@ -292,19 +423,9 @@
                             <option value="Cura">Cura</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Ciclo de Luz</label>
-                        <select id="p-light-cycle" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500">
-                            <option value="18/6">18/6 (Vegetativo)</option>
-                            <option value="12/12">12/12 (Floração)</option>
-                            <option value="20/4">20/4 (Automática)</option>
-                            <option value="24/0">24/0 (Contínuo)</option>
-                            <option value="Outdoor">Outdoor / Sol</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Hora que a Luz Liga</label>
-                        <input type="time" id="p-light-time" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500" style="color-scheme: dark;">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Substrato / Receita do Mix</label>
+                        <input type="text" id="p-substrate" placeholder="Ex: 70% Coco / 30% Perlita + Bokashi" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500">
                     </div>
                     <div class="col-span-2 md:col-span-1">
                         <label class="block text-sm font-medium text-slate-300 mb-1">Frequência de Rega (Dias) *</label>
@@ -319,7 +440,7 @@
         </div>
     </div>
 
-    <!-- Modal Novo Registro -->
+    <!-- Modal Novo Registro Individual -->
     <div id="modal-add-log" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl transform transition-all my-auto">
             <div class="flex justify-between items-center p-5 border-b border-dark-border bg-dark-bg/50">
@@ -355,6 +476,14 @@
                         <input type="number" id="l-humidity" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Altura do LED (cm)</label>
+                        <input type="number" id="l-led-height" placeholder="Ex: 45" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Dimmer do LED (%)</label>
+                        <input type="number" id="l-led-dimmer" placeholder="Ex: 80" min="0" max="100" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-slate-300 mb-1">pH da Rega</label>
                         <input type="number" id="l-ph" step="0.1" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
                     </div>
@@ -363,12 +492,19 @@
                         <input type="text" id="l-ec" placeholder="Ex: 1.5 ou 750" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Altura (cm)</label>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Tipo de Rega</label>
+                        <select id="l-feed-type" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                            <option value="Nutrientes">Rega com Nutrientes</option>
+                            <option value="Água Pura">Água Pura (Sem Aditivos)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Altura da Planta (cm)</label>
                         <input type="number" id="l-height" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Nutrientes / Fertilizantes</label>
-                        <input type="text" id="l-nutes" placeholder="Ex: BioGrow 2ml/L" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Fertilizantes Utilizados</label>
+                        <input type="text" id="l-nutes" placeholder="Ex: BioGrow 2ml/L + BioBloom 3ml/L" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500">
                     </div>
                     <div class="col-span-2">
                         <label class="block text-sm font-medium text-slate-300 mb-1">Observações</label>
@@ -383,13 +519,42 @@
         </div>
     </div>
 
+    <!-- Modal Fechamento de Ciclo / Colheita -->
+    <div id="modal-harvest" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-md overflow-hidden shadow-2xl my-auto">
+            <div class="flex justify-between items-center p-5 border-b border-dark-border bg-dark-bg/50">
+                <h3 class="text-xl font-bold text-white">Fechamento de Ciclo (Colheita)</h3>
+                <button type="button" onclick="window.app.closeModal('modal-harvest')" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <form id="form-harvest" class="p-5 space-y-4" onsubmit="window.app.handleHarvestSubmit(event)">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Peso Úmido (g)</label>
+                    <input type="number" id="h-wet" step="0.1" placeholder="Ex: 350.5" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Peso Seco Final (g)</label>
+                    <input type="number" id="h-dry" step="0.1" placeholder="Ex: 85.0" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Data de Início da Cura</label>
+                    <input type="date" id="h-cure-date" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-green-500" style="color-scheme: dark;">
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" onclick="window.app.closeModal('modal-harvest')" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-700 transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg text-sm font-medium bg-green-600 hover:bg-green-500 text-white transition-colors">Salvar Colheita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- TOAST NOTIFICATIONS -->
     <div id="toast-container" class="fixed bottom-20 md:bottom-4 right-4 flex flex-col gap-2"></div>
 
     <!-- JAVASCRIPT PRINCIPAL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        // 1. ADICIONADO O sendPasswordResetEmail NO IMPORT ABAIXO
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
@@ -418,11 +583,15 @@
             authMode: 'login',
             currentView: 'dashboard',
             currentPlantId: null,
+            currentTentId: null,
             editingPlantId: null,
+            editingTentId: null,
             plants: [],
             logs: [],
+            tents: [],
             unsubPlants: null,
-            unsubLogs: null
+            unsubLogs: null,
+            unsubTents: null
         };
 
         let chartInstance = null;
@@ -473,70 +642,6 @@
                 return colors[stage] || 'bg-slate-500 text-white';
             },
 
-            getLightStatus: (cycle, timeOn) => {
-                if (!cycle || !timeOn || cycle === '24/0' || cycle === 'Outdoor') {
-                    return { status: 'ON', text: cycle === 'Outdoor' ? 'Depende do sol' : 'Luzes sempre ligadas' };
-                }
-                const [hoursOn] = cycle.split('/').map(Number);
-                if (isNaN(hoursOn)) return { status: 'UNKNOWN', text: '--' };
-
-                const [onHour, onMinute] = timeOn.split(':').map(Number);
-                const now = new Date();
-                const nowMins = now.getHours() * 60 + now.getMinutes();
-                let onMins = onHour * 60 + onMinute;
-                let offMins = onMins + (hoursOn * 60);
-                let isOffNextDay = offMins >= 24 * 60;
-                if (isOffNextDay) offMins -= (24 * 60);
-
-                let isOn = false;
-                let nextEventMins = 0;
-
-                if (!isOffNextDay) {
-                    if (nowMins >= onMins && nowMins < offMins) {
-                        isOn = true;
-                        nextEventMins = offMins - nowMins;
-                    } else {
-                        if (nowMins < onMins) nextEventMins = onMins - nowMins;
-                        else nextEventMins = (24 * 60 - nowMins) + onMins;
-                    }
-                } else {
-                    if (nowMins >= onMins || nowMins < offMins) {
-                        isOn = true;
-                        if (nowMins >= onMins) nextEventMins = (24 * 60 - nowMins) + offMins;
-                        else nextEventMins = offMins - nowMins;
-                    } else {
-                        nextEventMins = onMins - nowMins;
-                    }
-                }
-                const h = Math.floor(nextEventMins / 60);
-                const m = nextEventMins % 60;
-                return {
-                    status: isOn ? 'ON' : 'OFF',
-                    text: `${isOn ? 'Desliga' : 'Liga'} em ${h}h ${m}m`
-                };
-            },
-
-            getCycleInfo: (plant) => {
-                const daysInCycle = utils.daysBetween(plant.cycleStartDate || plant.plantedDate, new Date());
-                let maxDays = 0;
-                let nextStepName = "";
-                let isAuto = plant.type && plant.type.includes('Auto');
-
-                if (plant.stage === 'Germinação' || plant.stage === 'Muda') {
-                    maxDays = 14; nextStepName = "Fase Vegetativa";
-                } else if (plant.stage === 'Vegetativo') {
-                    maxDays = isAuto ? 28 : 45; nextStepName = "Floração";
-                } else if (plant.stage === 'Floração') {
-                    maxDays = isAuto ? 60 : 65; nextStepName = "Colheita";
-                } else if (plant.stage === 'Flush') {
-                    maxDays = 7; nextStepName = "Colheita";
-                } else {
-                    return { daysInCycle, label: "--", remaining: 0, showEst: false };
-                }
-                const remaining = maxDays - daysInCycle;
-                return { daysInCycle, label: nextStepName, remaining, showEst: true };
-            },
-
             showToast: (message, type = 'success') => {
                 const container = document.getElementById('toast-container');
                 if (!container) return;
@@ -574,6 +679,7 @@
                         state.currentUser = null;
                         if (state.unsubPlants) state.unsubPlants();
                         if (state.unsubLogs) state.unsubLogs();
+                        if (state.unsubTents) state.unsubTents();
                         
                         document.getElementById('mobile-header').classList.add('hidden');
                         document.getElementById('app-sidebar').classList.add('hidden');
@@ -583,28 +689,15 @@
                 });
 
                 const today = new Date().toISOString().split('T')[0];
-                const pDateEl = document.getElementById('p-date');
-                const lDateEl = document.getElementById('l-date');
-                if (pDateEl) pDateEl.value = today;
-                if (lDateEl) lDateEl.value = today;
-
-                setInterval(() => {
-                    document.querySelectorAll('.timer-update').forEach(el => {
-                        const cycle = el.getAttribute('data-cycle');
-                        const time = el.getAttribute('data-time');
-                        if (cycle && time) {
-                            const info = utils.getLightStatus(cycle, time);
-                            el.innerText = info.text;
-                        }
-                    });
-                }, 60000);
+                ['p-date', 'l-date', 'tl-date', 'h-cure-date'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = today;
+                });
             },
 
             openConfigModal: () => {
                 const textarea = document.getElementById('fb-config-input');
-                if (textarea) {
-                    textarea.value = JSON.stringify(firebaseConfig, null, 2);
-                }
+                if (textarea) textarea.value = JSON.stringify(firebaseConfig, null, 2);
                 app.openModal('modal-firebase-config');
             },
 
@@ -612,9 +705,7 @@
                 const input = document.getElementById('fb-config-input').value.trim();
                 try {
                     const parsed = JSON.parse(input);
-                    if (!parsed.apiKey || !parsed.projectId) {
-                        throw new Error("Configuração inválida.");
-                    }
+                    if (!parsed.apiKey || !parsed.projectId) throw new Error("Configuração inválida.");
                     localStorage.setItem('cannatracker_fb_config', input);
                     utils.showToast("Configuração salva! Reiniciando...");
                     setTimeout(() => location.reload(), 1200);
@@ -623,7 +714,6 @@
                 }
             },
 
-            // 2. LÓGICA DE ABA ATUALIZADA PARA MOSTRAR/ESCONDER O BOTÃO DE ESQUECI A SENHA
             switchAuthTab: (mode) => {
                 state.authMode = mode;
                 const loginBtn = document.getElementById('tab-login-btn');
@@ -661,27 +751,17 @@
                 }
             },
 
-            // 3. FUNÇÃO NOVA PARA RECUPERAR SENHA ADICIONADA AQUI
             forgotPassword: async () => {
                 const email = document.getElementById('auth-email').value.trim();
-                
                 if (!email) {
                     utils.showToast("Por favor, digite seu e-mail no campo acima primeiro.", "error");
                     return;
                 }
-                
                 try {
                     await sendPasswordResetEmail(auth, email);
-                    utils.showToast("Link de recuperação enviado para " + email + ". Verifique seu spam!", "success");
+                    utils.showToast("Link de recuperação enviado para " + email + ".", "success");
                 } catch (error) {
-                    const code = error.code;
-                    if (code === 'auth/user-not-found') {
-                        utils.showToast("Esse e-mail não está cadastrado no sistema.", "error");
-                    } else if (code === 'auth/invalid-email') {
-                        utils.showToast("Formato de e-mail inválido.", "error");
-                    } else {
-                        utils.showToast("Erro ao recuperar senha. Tente novamente.", "error");
-                    }
+                    utils.showToast("Erro ao recuperar senha. Verifique o e-mail.", "error");
                 }
             },
 
@@ -707,6 +787,7 @@
                 if (!userId) return;
                 const plantsRef = collection(db, 'artifacts', appId, 'users', userId, 'plants');
                 const logsRef = collection(db, 'artifacts', appId, 'users', userId, 'logs');
+                const tentsRef = collection(db, 'artifacts', appId, 'users', userId, 'tents');
 
                 state.unsubPlants = onSnapshot(plantsRef, (snapshot) => {
                     state.plants = [];
@@ -719,14 +800,20 @@
                     snapshot.forEach(docSnap => state.logs.push({ id: docSnap.id, ...docSnap.data() }));
                     app.refreshCurrentView();
                 });
+
+                state.unsubTents = onSnapshot(tentsRef, (snapshot) => {
+                    state.tents = [];
+                    snapshot.forEach(docSnap => state.tents.push({ id: docSnap.id, ...docSnap.data() }));
+                    app.refreshCurrentView();
+                });
             },
 
             refreshCurrentView: () => {
                 if (state.currentView === 'dashboard') app.renderDashboard();
                 if (state.currentView === 'plants') app.renderPlants();
-                if (state.currentView === 'plant-details' && state.currentPlantId) {
-                    app.renderPlantDetails(state.currentPlantId);
-                }
+                if (state.currentView === 'tents') app.renderTents();
+                if (state.currentView === 'plant-details' && state.currentPlantId) app.renderPlantDetails(state.currentPlantId);
+                if (state.currentView === 'tent-details' && state.currentTentId) app.renderTentDetails(state.currentTentId);
             },
 
             navigate: (viewName, params = {}) => {
@@ -749,30 +836,51 @@
 
                 if (viewName === 'dashboard') app.renderDashboard();
                 if (viewName === 'plants') app.renderPlants();
+                if (viewName === 'tents') app.renderTents();
                 if (viewName === 'plant-details') {
                     state.currentPlantId = params.id;
                     app.renderPlantDetails(params.id);
+                }
+                if (viewName === 'tent-details') {
+                    state.currentTentId = params.id;
+                    app.renderTentDetails(params.id);
                 }
             },
 
             openModal: (modalId) => {
                 const modal = document.getElementById(modalId);
                 if (modal) modal.classList.remove('hidden');
-                
-                if (modalId === 'modal-add-log' && state.currentPlantId) {
-                    const plant = state.plants.find(p => p.id === state.currentPlantId);
-                    if (plant) document.getElementById('l-stage').value = plant.stage || 'Vegetativo';
+                if (modalId === 'modal-add-plant') app.populateTentSelect();
+            },
+
+            closeModal: (modalId) => {
+                const modal = document.getElementById(modalId);
+                if (modal) modal.classList.add('hidden');
+                if (modalId === 'modal-add-plant') {
+                    document.getElementById('form-add-plant').reset();
+                    state.editingPlantId = null;
+                }
+                if (modalId === 'modal-add-tent') {
+                    document.getElementById('form-add-tent').reset();
+                    state.editingTentId = null;
                 }
             },
 
-            openLogModal: () => app.openModal('modal-add-log'),
+            populateTentSelect: (selectedId = '') => {
+                const select = document.getElementById('p-tent-id');
+                if (!select) return;
+                let html = '<option value="">Nenhuma (Independente)</option>';
+                state.tents.forEach(t => {
+                    html += `<option value="${t.id}" ${t.id === selectedId ? 'selected' : ''}>${t.name}</option>`;
+                });
+                select.innerHTML = html;
+            },
 
             openNewPlantModal: () => {
                 state.editingPlantId = null;
                 document.getElementById('modal-plant-title').innerText = 'Cadastrar Nova Planta';
                 document.getElementById('form-add-plant').reset();
                 document.getElementById('p-date').value = new Date().toISOString().split('T')[0];
-                document.getElementById('p-water-interval').value = "2";
                 app.openModal('modal-add-plant');
             },
 
@@ -786,35 +894,35 @@
                 document.getElementById('p-type').value = plant.type || 'Fotoperíodo (Fem)';
                 document.getElementById('p-date').value = plant.plantedDate || '';
                 document.getElementById('p-stage').value = plant.stage || 'Muda';
-                document.getElementById('p-light-cycle').value = plant.lightCycle || '18/6';
-                document.getElementById('p-light-time').value = plant.lightsOnTime || '';
+                document.getElementById('p-substrate').value = plant.substrateMix || '';
                 document.getElementById('p-water-interval').value = plant.waterInterval || 2;
                 app.openModal('modal-add-plant');
+                app.populateTentSelect(plant.tentId || '');
             },
 
-            closeModal: (modalId) => {
-                const modal = document.getElementById(modalId);
-                if (modal) modal.classList.add('hidden');
-                if (modalId === 'modal-add-plant') {
-                    document.getElementById('form-add-plant').reset();
-                    state.editingPlantId = null;
-                }
-                if (modalId === 'modal-add-log') document.getElementById('form-add-log').reset();
+            openNewTentModal: () => {
+                state.editingTentId = null;
+                document.getElementById('modal-tent-title').innerText = 'Cadastrar Nova Tenda';
+                document.getElementById('form-add-tent').reset();
+                app.openModal('modal-add-tent');
             },
+
+            openLogModal: () => app.openModal('modal-add-log'),
+            openTentLogModal: () => app.openModal('modal-tent-log'),
+            openHarvestModal: () => app.openModal('modal-harvest'),
 
             renderDashboard: () => {
                 const activePlants = state.plants.filter(p => p.status === 'active');
-                
                 const statsEl = document.getElementById('dash-stats');
                 if (statsEl) {
                     statsEl.innerHTML = `
                         <div class="bg-dark-card p-4 rounded-xl border border-dark-border shadow-sm">
-                            <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Plantas</p>
+                            <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Plantas Ativas</p>
                             <p class="text-2xl font-bold text-white">${activePlants.length}</p>
                         </div>
                         <div class="bg-dark-card p-4 rounded-xl border border-dark-border shadow-sm">
-                            <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Registros</p>
-                            <p class="text-2xl font-bold text-white">${state.logs.length}</p>
+                            <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Tendas</p>
+                            <p class="text-2xl font-bold text-white">${state.tents.length}</p>
                         </div>
                         <div class="bg-dark-card p-4 rounded-xl border border-dark-border shadow-sm">
                             <p class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Floração</p>
@@ -839,8 +947,7 @@
                             <div class="flex items-start justify-between border-b border-dark-border pb-3 last:border-0 last:pb-0">
                                 <div>
                                     <p class="text-white font-medium text-sm">${plantName}</p>
-                                    <p class="text-slate-400 text-xs mt-0.5"><i class="fa-solid fa-droplet text-blue-400 mr-1"></i> pH: ${log.ph || '--'} | EC: ${log.ec || '--'}</p>
-                                    ${log.notes ? `<p class="text-slate-500 text-xs mt-1 truncate max-w-[200px] md:max-w-xs">${log.notes}</p>` : ''}
+                                    <p class="text-slate-400 text-xs mt-0.5"><i class="fa-solid fa-droplet text-blue-400 mr-1"></i> pH: ${log.ph || '--'} | LED: ${log.ledHeight ? log.ledHeight+'cm' : '--'}</p>
                                 </div>
                                 <div class="text-right shrink-0">
                                     <p class="text-slate-400 text-xs">${utils.formatDate(log.date)}</p>
@@ -909,6 +1016,96 @@
                 if (dashActivePlants) dashActivePlants.innerHTML = plantsHtml;
             },
 
+            renderTents: () => {
+                let html = '';
+                if (state.tents.length === 0) {
+                    html = `<div class="col-span-full text-center py-12 text-slate-500">Nenhuma tenda cadastrada. Clique em "Nova Tenda".</div>`;
+                } else {
+                    state.tents.forEach(tent => {
+                        const tentPlants = state.plants.filter(p => p.tentId === tent.id && p.status === 'active');
+                        html += `
+                            <div class="bg-dark-card rounded-xl border border-dark-border p-5 hover:border-green-500/50 transition-colors cursor-pointer shadow-sm relative group" onclick="window.app.navigate('tent-details', {id: '${tent.id}'})">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">${tent.name}</h3>
+                                        <p class="text-slate-400 text-xs mt-1"><i class="fa-solid fa-sun text-yellow-400"></i> Ciclo: ${tent.lightCycle || '18/6'}</p>
+                                    </div>
+                                    <span class="px-2.5 py-1 text-xs font-bold rounded bg-green-500/20 text-green-400">${tentPlants.length} plantas</span>
+                                </div>
+                                <div class="text-green-500 text-xs font-semibold group-hover:translate-x-1 transition-transform flex items-center">
+                                    Gerenciar Tenda <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                const grid = document.getElementById('tents-grid');
+                if (grid) grid.innerHTML = html;
+            },
+
+            renderTentDetails: (tentId) => {
+                const tent = state.tents.find(t => t.id === tentId);
+                if (!tent) return;
+                state.currentTentId = tentId;
+                const tentPlants = state.plants.filter(p => p.tentId === tentId);
+
+                const headerEl = document.getElementById('tent-detail-header');
+                if (headerEl) {
+                    headerEl.innerHTML = `
+                        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
+                            <div>
+                                <h1 class="text-2xl md:text-3xl font-bold text-white"><i class="fa-solid fa-tent text-green-500 mr-2"></i>${tent.name}</h1>
+                                <p class="text-slate-400 text-sm mt-1">Luz: ${tent.lightCycle || '--'} | Liga às: ${tent.lightTime || '--'}</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="button" onclick="window.app.openTentLogModal()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-500/20">
+                                    <i class="fa-solid fa-bolt mr-2"></i> Registro Coletivo (Massa)
+                                </button>
+                                <button type="button" onclick="window.app.deleteTent('${tent.id}')" class="bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500/20 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const infoCardEl = document.getElementById('tent-info-card');
+                if (infoCardEl) {
+                    infoCardEl.innerHTML = `
+                        <h2 class="text-lg font-bold text-white mb-4">Resumo da Tenda</h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b border-dark-border pb-2">
+                                <span class="text-slate-400">Total de Plantas</span>
+                                <span class="text-white font-medium">${tentPlants.length}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-dark-border pb-2">
+                                <span class="text-slate-400">Ciclo de Luz</span>
+                                <span class="text-yellow-400 font-medium">${tent.lightCycle || '--'}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let plantsHtml = '';
+                if (tentPlants.length === 0) {
+                    plantsHtml = `<div class="text-slate-500 text-center py-6 text-sm">Nenhuma planta vinculada a esta tenda. Você pode associar ao editar a planta.</div>`;
+                } else {
+                    tentPlants.forEach(plant => {
+                        plantsHtml += `
+                            <div class="flex items-center justify-between p-3 bg-dark-bg rounded-lg border border-dark-border hover:border-green-500/50 cursor-pointer transition-colors" onclick="window.app.navigate('plant-details', {id: '${plant.id}'})">
+                                <div>
+                                    <p class="text-white font-medium text-sm">${plant.name}</p>
+                                    <p class="text-slate-400 text-xs">${plant.strain || 'Genética não informada'}</p>
+                                </div>
+                                <span class="px-2 py-0.5 text-[10px] uppercase font-bold rounded ${utils.getStageColor(plant.stage)}">${plant.stage}</span>
+                            </div>
+                        `;
+                    });
+                }
+                const plantsListEl = document.getElementById('tent-plants-list');
+                if (plantsListEl) plantsListEl.innerHTML = plantsHtml;
+            },
+
             renderPlants: () => {
                 let html = '';
                 if (state.plants.length === 0) {
@@ -921,8 +1118,10 @@
                         let waterDot = "";
                         if(waterInfo.status === 'warning' || waterInfo.status === 'danger') {
                             waterBorder = waterInfo.status === 'danger' ? "border-red-500/30 hover:border-red-500" : "border-yellow-500/30 hover:border-yellow-500";
-                            waterDot = `<span class="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full ${waterInfo.status === 'danger' ? 'bg-red-500' : 'bg-yellow-500'} shadow-[0_0_5px_currentColor]"></span>`;
+                            waterDot = `<span class="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full ${waterInfo.status === 'danger' ? 'bg-red-500' : 'bg-yellow-500'}"></span>`;
                         }
+
+                        const tent = state.tents.find(t => t.id === plant.tentId);
 
                         html += `
                             <div class="bg-dark-card rounded-xl border ${waterBorder} p-5 transition-colors cursor-pointer shadow-sm relative group" onclick="window.app.navigate('plant-details', {id: '${plant.id}'})">
@@ -930,7 +1129,7 @@
                                 <div class="flex justify-between items-start mb-4">
                                     <div class="pr-2">
                                         <h3 class="text-lg font-bold text-white truncate max-w-[200px]">${plant.name}</h3>
-                                        <p class="text-slate-400 text-xs mt-1 truncate">${plant.strain || 'Genética não informada'}</p>
+                                        <p class="text-slate-400 text-xs mt-1 truncate">${plant.strain || 'Genética não informada'} ${tent ? '• ' + tent.name : ''}</p>
                                     </div>
                                     <span class="px-2 py-1 text-[10px] uppercase font-bold rounded ${utils.getStageColor(plant.stage)} shrink-0">${plant.stage}</span>
                                 </div>
@@ -940,8 +1139,8 @@
                                         <p class="text-white font-medium">${days} dias</p>
                                     </div>
                                     <div>
-                                        <p class="text-slate-500 text-xs">Tipo</p>
-                                        <p class="text-white font-medium truncate">${plant.type}</p>
+                                        <p class="text-slate-500 text-xs">Substrato</p>
+                                        <p class="text-white font-medium truncate">${plant.substrateMix || 'Padrão'}</p>
                                     </div>
                                 </div>
                                 <div class="text-green-500 text-xs font-semibold group-hover:translate-x-1 transition-transform flex items-center">
@@ -958,9 +1157,10 @@
             renderPlantDetails: (plantId) => {
                 const plant = state.plants.find(p => p.id === plantId);
                 if (!plant) return;
+                state.currentPlantId = plantId;
                 const daysOld = utils.daysBetween(plant.plantedDate, new Date());
                 const logs = state.logs.filter(l => l.plantId === plantId).sort((a, b) => new Date(b.date) - new Date(a.date));
-                const cycleInfo = utils.getCycleInfo(plant);
+                const tent = state.tents.find(t => t.id === plant.tentId);
 
                 const headerEl = document.getElementById('plant-detail-header');
                 if (headerEl) {
@@ -971,53 +1171,29 @@
                                     <h1 class="text-2xl md:text-3xl font-bold text-white">${plant.name}</h1>
                                     <span class="px-2.5 py-1 text-xs font-bold rounded ${utils.getStageColor(plant.stage)}">${plant.stage}</span>
                                 </div>
-                                <p class="text-slate-400 text-sm"><i class="fa-solid fa-dna mr-1"></i> ${plant.strain || 'Genética desconhecida'} • ${plant.type}</p>
+                                <p class="text-slate-400 text-sm"><i class="fa-solid fa-dna mr-1"></i> ${plant.strain || 'Genética desconhecida'} ${tent ? '• Tenda: ' + tent.name : ''}</p>
                             </div>
-                            <div class="grid grid-cols-2 md:flex flex-wrap gap-2 md:gap-3">
-                                <div class="bg-dark-card px-3 md:px-4 py-2 rounded-lg border border-dark-border text-center flex-1">
-                                    <span class="block text-[9px] md:text-[10px] text-slate-400 uppercase">Idade Total</span>
-                                    <span class="font-bold text-base md:text-lg text-white">${daysOld} <span class="text-xs font-normal text-slate-500">d</span></span>
-                                </div>
-                                <div class="bg-dark-card px-3 md:px-4 py-2 rounded-lg border border-dark-border text-center flex-1">
-                                    <span class="block text-[9px] md:text-[10px] text-slate-400 uppercase">Luz Atual</span>
-                                    <span class="font-bold text-base md:text-lg text-yellow-400">${plant.lightCycle}</span>
-                                </div>
-                                <div class="bg-dark-card px-3 md:px-4 py-2 rounded-lg border border-dark-border text-center flex-1">
-                                    <span class="block text-[9px] md:text-[10px] text-slate-400 uppercase">Nesta Fase</span>
-                                    <span class="font-bold text-base md:text-lg text-white">${cycleInfo.daysInCycle} <span class="text-xs font-normal text-slate-500">d</span></span>
-                                </div>
-                                ${cycleInfo.showEst ? `
-                                <div class="bg-dark-card px-3 md:px-4 py-2 rounded-lg border border-dark-border text-center flex-1">
-                                    <span class="block text-[9px] md:text-[10px] text-slate-400 uppercase">Para ${cycleInfo.label}</span>
-                                    <span class="font-bold text-base md:text-lg ${cycleInfo.remaining <= 0 ? 'text-green-400' : 'text-blue-400'}">
-                                        ${cycleInfo.remaining <= 0 ? 'Pronto' : `~${cycleInfo.remaining}d`}
-                                    </span>
-                                </div>` : ''}
-                                <button type="button" onclick="window.app.openEditPlantModal('${plant.id}')" class="col-span-2 md:col-span-1 bg-dark-bg hover:bg-slate-700 text-white px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-dark-border shadow-sm flex items-center justify-center min-w-[80px]">
-                                    <i class="fa-solid fa-pen md:mr-2"></i> <span class="md:inline">Editar</span>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="window.app.openHarvestModal()" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+                                    <i class="fa-solid fa-scissors mr-1"></i> Registrar Colheita / Cura
+                                </button>
+                                <button type="button" onclick="window.app.openEditPlantModal('${plant.id}')" class="bg-dark-bg hover:bg-slate-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors border border-dark-border">
+                                    <i class="fa-solid fa-pen mr-1"></i> Editar
                                 </button>
                             </div>
                         </div>
                     `;
                 }
 
-                let lightWidgetHtml = '';
-                if(plant.lightCycle && plant.lightCycle !== 'Outdoor' && plant.lightsOnTime) {
-                    const lightInfo = utils.getLightStatus(plant.lightCycle, plant.lightsOnTime);
-                    const isON = lightInfo.status === 'ON';
-                    lightWidgetHtml = `
-                        <div class="bg-dark-bg p-4 rounded-lg border border-dark-border mb-4">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Fotoperíodo (${plant.lightCycle})</span>
-                                <i class="fa-solid ${isON ? 'fa-sun text-yellow-400' : 'fa-moon text-indigo-400'} text-lg"></i>
-                            </div>
-                            <div class="text-white font-medium text-sm flex items-center">
-                                <span class="w-2 h-2 rounded-full ${isON ? 'bg-yellow-400' : 'bg-indigo-400'} mr-2 shadow-[0_0_8px_currentColor]"></span>
-                                Luzes ${isON ? 'Ligadas' : 'Desligadas'}
-                            </div>
-                            <div class="text-xs text-slate-400 mt-1 pl-4 timer-update" data-cycle="${plant.lightCycle}" data-time="${plant.lightsOnTime}">
-                                ${lightInfo.text}
-                            </div>
+                // Curing / Harvest badge info if applicable
+                let harvestInfoHtml = '';
+                if (plant.stage === 'Cura' || plant.stage === 'Colheita/Secagem') {
+                    const cureDays = plant.curingStartDate ? utils.daysBetween(plant.curingStartDate, new Date()) : 0;
+                    harvestInfoHtml = `
+                        <div class="bg-amber-500/10 border border-amber-500/30 p-4 rounded-lg mb-4 text-sm">
+                            <h4 class="font-bold text-amber-400 mb-2"><i class="fa-solid fa-jar mr-1"></i> Status de Pós-Colheita</h4>
+                            <p class="text-slate-300">Peso Úmido: <strong>${plant.wetWeight || '--'}g</strong> | Peso Seco: <strong>${plant.dryWeight || '--'}g</strong></p>
+                            <p class="text-amber-300 mt-1">Tempo de Cura nos Potes: <strong>${cureDays} dias</strong></p>
                         </div>
                     `;
                 }
@@ -1030,8 +1206,8 @@
                 const infoCardEl = document.getElementById('plant-info-card');
                 if (infoCardEl) {
                     infoCardEl.innerHTML = `
-                        <h2 class="text-lg font-bold text-white mb-4">Informações</h2>
-                        ${lightWidgetHtml}
+                        <h2 class="text-lg font-bold text-white mb-4">Informações & Manejo</h2>
+                        ${harvestInfoHtml}
                         <div class="bg-dark-bg p-4 rounded-lg border border-dark-border mb-4">
                             <div class="flex items-center justify-between mb-3">
                                 <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Controle de Rega</span>
@@ -1053,8 +1229,12 @@
                         </div>
                         <ul class="space-y-3 text-sm">
                             <li class="flex justify-between border-b border-dark-border pb-2">
-                                <span class="text-slate-400">Data de Plantio</span>
-                                <span class="text-white">${utils.formatDate(plant.plantedDate)}</span>
+                                <span class="text-slate-400">Idade Total</span>
+                                <span class="text-white">${daysOld} dias</span>
+                            </li>
+                            <li class="flex justify-between border-b border-dark-border pb-2">
+                                <span class="text-slate-400">Substrato / Mix</span>
+                                <span class="text-white">${plant.substrateMix || 'Padrão'}</span>
                             </li>
                         </ul>
                         <div class="mt-6 pt-4 border-t border-dark-border">
@@ -1072,16 +1252,18 @@
                     logs.forEach(log => {
                         logsHtml += `
                             <div class="bg-dark-bg p-4 rounded-lg border border-dark-border relative group">
-                                <button type="button" onclick="window.app.deleteLog('${log.id}')" class="absolute top-4 right-4 text-slate-500 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                <button type="button" onclick="window.app.deleteLog('${log.id}')" class="absolute top-4 right-4 text-slate-500 hover:text-red-500">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                                 <div class="flex items-center mb-3">
                                     <span class="text-white font-bold mr-3">${utils.formatDate(log.date)}</span>
                                     <span class="px-2 py-0.5 text-[10px] uppercase font-bold rounded ${utils.getStageColor(log.stage)}">${log.stage}</span>
                                 </div>
-                                <div class="grid grid-cols-2 gap-3 mb-3 text-sm">
-                                    <div class="bg-dark-card p-2 rounded border border-dark-border"><span class="text-slate-500 block text-xs">Temp/Umid</span><span class="text-white">${log.temp||'--'}°C / ${log.humidity||'--'}%</span></div>
-                                    <div class="bg-dark-card p-2 rounded border border-dark-border"><span class="text-slate-500 block text-xs">pH/EC</span><span class="text-white">${log.ph||'--'} / ${log.ec||'--'}</span></div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 text-xs">
+                                    <div class="bg-dark-card p-2 rounded border border-dark-border"><span class="text-slate-500 block">Temp/Umid</span><span class="text-white">${log.temp||'--'}°C / ${log.humidity||'--'}%</span></div>
+                                    <div class="bg-dark-card p-2 rounded border border-dark-border"><span class="text-slate-500 block">LED (Altura/Dim)</span><span class="text-white">${log.ledHeight||'--'}cm / ${log.ledDimmer||'--'}%</span></div>
+                                    <div class="bg-dark-card p-2 rounded border border-dark-border"><span class="text-slate-500 block">pH / EC</span><span class="text-white">${log.ph||'--'} / ${log.ec||'--'}</span></div>
+                                    <div class="bg-dark-card p-2 rounded border border-dark-border"><span class="text-slate-500 block">Tipo de Rega</span><span class="text-white">${log.feedType||'Nutrientes'}</span></div>
                                 </div>
                                 ${log.nutes ? `<div class="text-sm mt-2"><span class="text-slate-400"><i class="fa-solid fa-flask text-purple-400 w-4"></i> Fert:</span> <span class="text-slate-200">${log.nutes}</span></div>` : ''}
                                 ${log.notes ? `<div class="text-sm mt-1"><span class="text-slate-400"><i class="fa-regular fa-comment text-slate-400 w-4"></i> Notas:</span> <span class="text-slate-300 italic">"${log.notes}"</span></div>` : ''}
@@ -1134,21 +1316,22 @@
                 e.preventDefault();
                 if (!state.currentUser) return;
                 const plantData = {
-                    name: document.getElementById('p-name').value, strain: document.getElementById('p-strain').value, type: document.getElementById('p-type').value,
-                    plantedDate: document.getElementById('p-date').value, stage: document.getElementById('p-stage').value, lightCycle: document.getElementById('p-light-cycle').value,
-                    lightsOnTime: document.getElementById('p-light-time').value, waterInterval: parseInt(document.getElementById('p-water-interval').value) || 2, status: 'active'
+                    name: document.getElementById('p-name').value,
+                    strain: document.getElementById('p-strain').value,
+                    tentId: document.getElementById('p-tent-id').value || null,
+                    type: document.getElementById('p-type').value,
+                    plantedDate: document.getElementById('p-date').value,
+                    stage: document.getElementById('p-stage').value,
+                    substrateMix: document.getElementById('p-substrate').value,
+                    waterInterval: parseInt(document.getElementById('p-water-interval').value) || 2,
+                    status: 'active'
                 };
                 try {
                     if (state.editingPlantId) {
-                        const existing = state.plants.find(p => p.id === state.editingPlantId);
-                        if (existing && (existing.stage !== plantData.stage || existing.lightCycle !== plantData.lightCycle)) {
-                            plantData.cycleStartDate = new Date().toISOString().split('T')[0];
-                        } else { plantData.cycleStartDate = existing?.cycleStartDate || existing?.plantedDate; }
                         await updateDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'plants', state.editingPlantId), plantData);
                         utils.showToast('Planta atualizada!');
                     } else {
                         plantData.lastWatered = new Date().toISOString().split('T')[0];
-                        plantData.cycleStartDate = plantData.plantedDate;
                         await setDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'plants', utils.generateId('p')), plantData);
                         utils.showToast('Planta salva com sucesso!');
                     }
@@ -1156,23 +1339,98 @@
                 } catch (error) { utils.showToast('Erro ao salvar planta', 'error'); }
             },
 
+            handleTentSubmit: async (e) => {
+                e.preventDefault();
+                if (!state.currentUser) return;
+                const tentData = {
+                    name: document.getElementById('t-name').value,
+                    lightCycle: document.getElementById('t-light-cycle').value,
+                    lightTime: document.getElementById('t-light-time').value
+                };
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'tents', utils.generateId('t')), tentData);
+                    utils.showToast('Tenda criada com sucesso!');
+                    app.closeModal('modal-add-tent');
+                } catch (error) { utils.showToast('Erro ao salvar tenda', 'error'); }
+            },
+
             handleLogSubmit: async (e) => {
                 e.preventDefault();
                 if (!state.currentUser || !state.currentPlantId) return;
                 const logData = {
-                    plantId: state.currentPlantId, date: document.getElementById('l-date').value, stage: document.getElementById('l-stage').value,
-                    temp: document.getElementById('l-temp').value, humidity: document.getElementById('l-humidity').value, ph: document.getElementById('l-ph').value,
-                    ec: document.getElementById('l-ec').value, height: document.getElementById('l-height').value, nutes: document.getElementById('l-nutes').value, notes: document.getElementById('l-notes').value
+                    plantId: state.currentPlantId,
+                    date: document.getElementById('l-date').value,
+                    stage: document.getElementById('l-stage').value,
+                    temp: document.getElementById('l-temp').value,
+                    humidity: document.getElementById('l-humidity').value,
+                    ledHeight: document.getElementById('l-led-height').value,
+                    ledDimmer: document.getElementById('l-led-dimmer').value,
+                    ph: document.getElementById('l-ph').value,
+                    ec: document.getElementById('l-ec').value,
+                    feedType: document.getElementById('l-feed-type').value,
+                    height: document.getElementById('l-height').value,
+                    nutes: document.getElementById('l-nutes').value,
+                    notes: document.getElementById('l-notes').value
                 };
                 try {
                     await setDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'logs', utils.generateId('l')), logData);
-                    const plant = state.plants.find(p => p.id === state.currentPlantId);
-                    if (plant && plant.stage !== logData.stage) {
-                        await updateDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'plants', plant.id), { stage: logData.stage, cycleStartDate: logData.date });
-                    }
+                    await updateDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'plants', state.currentPlantId), { stage: logData.stage });
                     utils.showToast('Registro adicionado!');
                     app.closeModal('modal-add-log');
                 } catch (error) { utils.showToast('Erro ao salvar registro', 'error'); }
+            },
+
+            handleTentLogSubmit: async (e) => {
+                e.preventDefault();
+                if (!state.currentUser || !state.currentTentId) return;
+                const tentPlants = state.plants.filter(p => p.tentId === state.currentTentId && p.status === 'active');
+                if (tentPlants.length === 0) {
+                    utils.showToast('Nenhuma planta ativa nesta tenda.', 'error');
+                    return;
+                }
+
+                const sharedLog = {
+                    date: document.getElementById('tl-date').value,
+                    stage: document.getElementById('tl-stage').value,
+                    temp: document.getElementById('tl-temp').value,
+                    humidity: document.getElementById('tl-humidity').value,
+                    ledHeight: document.getElementById('tl-led-height').value,
+                    ledDimmer: document.getElementById('tl-led-dimmer').value,
+                    notes: document.getElementById('tl-notes').value
+                };
+
+                try {
+                    for (const plant of tentPlants) {
+                        const logData = { ...sharedLog, plantId: plant.id, feedType: 'Nutrientes' };
+                        await setDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'logs', utils.generateId('l')), logData);
+                        await updateDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'plants', plant.id), { stage: sharedLog.stage });
+                    }
+                    utils.showToast(`Registro aplicado a ${tentPlants.length} plantas com sucesso!`);
+                    app.closeModal('modal-tent-log');
+                } catch (error) {
+                    utils.showToast('Erro ao salvar registro em massa', 'error');
+                }
+            },
+
+            handleHarvestSubmit: async (e) => {
+                e.preventDefault();
+                if (!state.currentUser || !state.currentPlantId) return;
+                const wet = document.getElementById('h-wet').value;
+                const dry = document.getElementById('h-dry').value;
+                const cureDate = document.getElementById('h-cure-date').value;
+
+                try {
+                    await updateDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'plants', state.currentPlantId), {
+                        stage: 'Cura',
+                        wetWeight: wet,
+                        dryWeight: dry,
+                        curingStartDate: cureDate
+                    });
+                    utils.showToast('Colheita e dados de cura salvos!');
+                    app.closeModal('modal-harvest');
+                } catch (error) {
+                    utils.showToast('Erro ao salvar colheita', 'error');
+                }
             },
 
             deletePlant: async (id) => {
@@ -1184,6 +1442,15 @@
                     utils.showToast('Planta excluída');
                     app.navigate('plants');
                 } catch (error) { utils.showToast('Erro ao excluir', 'error'); }
+            },
+
+            deleteTent: async (id) => {
+                if (!state.currentUser) return;
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'users', state.currentUser.uid, 'tents', id));
+                    utils.showToast('Tenda excluída');
+                    app.navigate('tents');
+                } catch (error) { utils.showToast('Erro ao excluir tenda', 'error'); }
             },
 
             waterPlant: async (id) => {
